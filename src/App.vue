@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
+  <v-app style="background-color: #ffa000;">
+    <v-app-bar app color="primary" dark elevation="0">
       <v-spacer></v-spacer>
       <h1>Braven</h1>
       <v-spacer></v-spacer>
@@ -14,9 +14,6 @@
 
 <script>
 export default {
-  name: 'App',
-  data: () => ({
-    //
-  })
+  name: 'App'
 }
 </script>
