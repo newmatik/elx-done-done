@@ -2,12 +2,13 @@
   <div style="max-width: 720px;" class="home mx-auto">
     <v-card class="d-flex align-center mt-12 pa-4">
       <v-text-field
+        v-model="taskTitle"
         prepend-inner-icon="mdi-clipboard-outline"
         class="mr-4"
-        label="Enter a task..."
+        label="Add a new task by pressing + or enter key"
       ></v-text-field>
-      <v-btn class="mx-2" fab dark small color="primary">
-        <v-icon dark>
+      <v-btn class="mx-2" fab small elevation="0">
+        <v-icon>
           mdi-plus
         </v-icon>
       </v-btn>
@@ -18,6 +19,7 @@
         group="list"
         @start="drag = true"
         @end="drag = false"
+        @change="log"
       >
         <todo-item
           v-for="item in items"
@@ -33,6 +35,7 @@
 <script>
 import draggable from 'vuedraggable'
 import TodoItem from '@/components/TodoItem.vue'
+import { db } from '@/settings/db'
 
 export default {
   name: 'Home',
@@ -42,11 +45,19 @@ export default {
   },
   data() {
     return {
+      taskTitle: '',
       drag: false,
-      items: [
-        { id: 1, title: 'Sample todo', status: 'todo' },
-        { id: 2, title: 'Sample todo 2', status: 'todo' }
-      ]
+      items: []
+    }
+  },
+  firestore() {
+    return {
+      items: db.collection(`boards/${this.$route.params.id}/list`)
+    }
+  },
+  methods: {
+    log(value) {
+      console.log(value)
     }
   }
 }
