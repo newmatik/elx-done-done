@@ -11,7 +11,7 @@
       </p>
     </div>
     <div>
-      <v-btn class="mx-2" fab x-small elevation="0">
+      <v-btn @click="removeTask" class="mx-2" fab x-small elevation="0">
         <v-icon>
           mdi-trash-can
         </v-icon>
@@ -24,9 +24,15 @@
 </template>
 
 <script>
+import { db } from '@/settings/db'
+
 export default {
   name: 'TodoItem',
   props: {
+    id: {
+      type: String,
+      default: ''
+    },
     title: {
       type: String,
       default: ''
@@ -34,6 +40,16 @@ export default {
     status: {
       type: String,
       default: 'todo'
+    }
+  },
+  methods: {
+    async removeTask() {
+      await db
+        .collection('boards')
+        .doc(this.$route.params.id)
+        .collection('list')
+        .doc(this.id)
+        .delete()
     }
   }
 }

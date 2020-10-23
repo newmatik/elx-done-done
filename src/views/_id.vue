@@ -2,7 +2,7 @@
   <div style="max-width: 720px;" class="home mx-auto">
     <v-card class="d-flex align-center mt-12 pa-4">
       <v-text-field
-        v-model="taskTitle"
+        v-model.trim="taskTitle"
         prepend-inner-icon="mdi-clipboard-outline"
         class="mr-4"
         label="Add a new task by pressing + or enter key"
@@ -61,15 +61,17 @@ export default {
       console.log(value)
     },
     async addTask() {
-      await db
-        .collection('boards')
-        .doc(this.$route.params.id)
-        .collection('list')
-        .add({
-          title: this.taskTitle,
-          status: 'todo'
-        })
-      this.taskTitle = ''
+      if (this.taskTitle) {
+        await db
+          .collection('boards')
+          .doc(this.$route.params.id)
+          .collection('list')
+          .add({
+            title: this.taskTitle,
+            status: 'todo'
+          })
+        this.taskTitle = ''
+      }
     }
   }
 }
