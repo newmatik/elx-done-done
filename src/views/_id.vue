@@ -7,7 +7,7 @@
         class="mr-4"
         label="Add a new task by pressing + or enter key"
       ></v-text-field>
-      <v-btn class="mx-2" fab small elevation="0">
+      <v-btn @click="addTask" class="mx-2" fab small elevation="0">
         <v-icon>
           mdi-plus
         </v-icon>
@@ -24,6 +24,7 @@
         <todo-item
           v-for="item in items"
           :key="item.id"
+          :id="item.id"
           :title="item.title"
           :status="item.status"
         ></todo-item>
@@ -58,6 +59,17 @@ export default {
   methods: {
     log(value) {
       console.log(value)
+    },
+    async addTask() {
+      await db
+        .collection('boards')
+        .doc(this.$route.params.id)
+        .collection('list')
+        .add({
+          title: this.taskTitle,
+          status: 'todo'
+        })
+      this.taskTitle = ''
     }
   }
 }
