@@ -3,6 +3,7 @@
     <v-card class="d-flex align-center mt-12 pa-4">
       <v-text-field
         v-model.trim="taskTitle"
+        @keydown.enter="addTask"
         prepend-inner-icon="mdi-clipboard-outline"
         class="mr-4"
         label="Add a new task by pressing + or enter key"
@@ -17,6 +18,7 @@
       <draggable
         v-model="items"
         group="list"
+        handle=".handle"
         @start="drag = true"
         @end="drag = false"
         @change="log"
@@ -25,7 +27,7 @@
           v-for="item in items"
           :key="item.id"
           :id="item.id"
-          :title="item.title"
+          :task-title="item.taskTitle"
           :status="item.status"
         ></todo-item>
       </draggable>
@@ -61,16 +63,18 @@ export default {
       console.log(value)
     },
     async addTask() {
+      const taskTitle = this.taskTitle
       if (this.taskTitle) {
+        this.taskTitle = ''
         await db
           .collection('boards')
           .doc(this.$route.params.id)
           .collection('list')
           .add({
-            title: this.taskTitle,
-            status: 'todo'
+            taskTitle,
+            status: 'todo',
+            order: this.items.length + 1
           })
-        this.taskTitle = ''
       }
     }
   }
