@@ -38,7 +38,7 @@
         </p>
       </div>
     </div>
-    <div>
+    <div class="d-flex">
       <v-btn @click="removeTask" class="mx-2" fab x-small elevation="0">
         <v-icon>
           mdi-trash-can

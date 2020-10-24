@@ -1,5 +1,5 @@
 <template>
-  <div style="max-width: 720px;" class="home mx-auto">
+  <div style="max-width: 720px;" class="board-page mx-auto">
     <v-text-field
       v-model.trim="taskTitle"
       class="mt-12"
@@ -140,3 +140,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@media (max-width: 640px) {
+  .board-page {
+    padding: 0 1rem;
+  }
+}
+</style>

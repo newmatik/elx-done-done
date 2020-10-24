@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="transparent" elevation="0">
+    <v-app-bar app color="white" elevation="0">
       <v-spacer></v-spacer>
       <img src="images/DoneDoneLogo.svg" alt="Done Done Logo" />
       <v-spacer></v-spacer>
