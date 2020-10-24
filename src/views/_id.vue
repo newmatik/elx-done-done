@@ -1,36 +1,74 @@
 <template>
   <div style="max-width: 720px;" class="home mx-auto">
-    <v-card class="d-flex align-center mt-12 pa-4">
-      <v-text-field
-        v-model.trim="taskTitle"
-        @keydown.enter="addTask"
-        prepend-inner-icon="mdi-clipboard-outline"
-        class="mr-4"
-        label="Add a new task by pressing + or enter key"
-      ></v-text-field>
-      <v-btn @click="addTask" class="mx-2" fab small elevation="0">
-        <v-icon>
-          mdi-plus
-        </v-icon>
-      </v-btn>
-    </v-card>
-    <v-main>
-      <draggable
-        v-model="items"
-        group="list"
-        handle=".handle"
-        @start="drag = true"
-        @end="drag = false"
-        @change="log"
-      >
-        <todo-item
-          v-for="item in items"
-          :key="item.id"
-          :id="item.id"
-          :task-title="item.taskTitle"
-          :status="item.status"
-        ></todo-item>
-      </draggable>
+    <v-text-field
+      v-model.trim="taskTitle"
+      class="mt-12"
+      outlined
+      label="Add a new task by pressing + or enter key"
+      append-icon="mdi-plus-circle"
+      @keydown.enter="addTask"
+      @click:append="addTask"
+    ></v-text-field>
+    <v-main class="pt-4">
+      <v-tabs v-model="tab" class="mb-4">
+        <v-tab href="#all">All</v-tab>
+        <v-tab href="#pending">Pending</v-tab>
+        <v-tab href="#done">Done</v-tab>
+      </v-tabs>
+      <v-tabs-items v-model="tab">
+        <v-tab-item value="all">
+          <draggable
+            v-model="items"
+            group="list"
+            handle=".handle"
+            @start="drag = true"
+            @end="drag = false"
+            @change="log"
+          >
+            <todo-item
+              v-for="item in items"
+              :key="item.id"
+              :id="item.id"
+              :task-title="item.taskTitle"
+              :status="item.status"
+            ></todo-item>
+          </draggable>
+        </v-tab-item>
+        <v-tab-item value="pending">
+          <draggable
+            group="list"
+            handle=".handle"
+            @start="drag = true"
+            @end="drag = false"
+            @change="log"
+          >
+            <todo-item
+              v-for="item in pendingItems"
+              :key="item.id"
+              :id="item.id"
+              :task-title="item.taskTitle"
+              :status="item.status"
+            ></todo-item>
+          </draggable>
+        </v-tab-item>
+        <v-tab-item value="done">
+          <draggable
+            group="list"
+            handle=".handle"
+            @start="drag = true"
+            @end="drag = false"
+            @change="log"
+          >
+            <todo-item
+              v-for="item in doneItems"
+              :key="item.id"
+              :id="item.id"
+              :task-title="item.taskTitle"
+              :status="item.status"
+            ></todo-item>
+          </draggable>
+        </v-tab-item>
+      </v-tabs-items>
     </v-main>
   </div>
 </template>
@@ -50,12 +88,21 @@ export default {
     return {
       taskTitle: '',
       drag: false,
-      items: []
+      items: [],
+      tab: 'all'
     }
   },
   firestore() {
     return {
       items: db.collection(`boards/${this.$route.params.id}/list`)
+    }
+  },
+  computed: {
+    pendingItems() {
+      return this.items.filter(item => item.status === 'pending')
+    },
+    doneItems() {
+      return this.items.filter(item => item.status === 'done')
     }
   },
   methods: {
@@ -72,7 +119,7 @@ export default {
           .collection('list')
           .add({
             taskTitle,
-            status: 'todo',
+            status: 'pending',
             order: this.items.length + 1
           })
       }

@@ -2,6 +2,8 @@
   <v-card
     :color="status === 'done' ? 'blue-grey lighten-5' : ''"
     class="d-flex justify-space-between pa-4 mb-2"
+    elevation="0"
+    outlined
   >
     <div style="width: 50%" class="d-flex align-center">
       <div>
@@ -59,7 +61,7 @@ export default {
     },
     status: {
       type: String,
-      default: 'todo'
+      default: 'pending'
     }
   },
   data() {
@@ -82,7 +84,7 @@ export default {
         .doc(this.$route.params.id)
         .collection('list')
         .doc(this.id)
-        .update({ status: value ? 'done' : 'todo' })
+        .update({ status: value ? 'done' : 'pending' })
     },
     onTaskClick() {
       this.isEditing = true
