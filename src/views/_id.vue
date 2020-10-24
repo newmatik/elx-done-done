@@ -31,6 +31,7 @@
               :id="item.id"
               :task-title="item.taskTitle"
               :status="item.status"
+              :type="item.type"
             ></todo-item>
           </draggable>
         </v-tab-item>
@@ -48,6 +49,7 @@
               :id="item.id"
               :task-title="item.taskTitle"
               :status="item.status"
+              :type="item.type"
             ></todo-item>
           </draggable>
         </v-tab-item>
@@ -65,6 +67,7 @@
               :id="item.id"
               :task-title="item.taskTitle"
               :status="item.status"
+              :type="item.type"
             ></todo-item>
           </draggable>
         </v-tab-item>
@@ -103,6 +106,9 @@ export default {
     },
     doneItems() {
       return this.items.filter(item => item.status === 'done')
+    },
+    isHeadline() {
+      return this.taskTitle.endsWith(':')
     }
   },
   methods: {
@@ -110,7 +116,10 @@ export default {
       console.log(value)
     },
     async addTask() {
-      const taskTitle = this.taskTitle
+      const isHeadline = this.isHeadline
+      const taskTitle = isHeadline
+        ? this.taskTitle.slice(0, -1)
+        : this.taskTitle
       if (this.taskTitle) {
         this.taskTitle = ''
         await db
@@ -120,7 +129,8 @@ export default {
           .add({
             taskTitle,
             status: 'pending',
-            order: this.items.length + 1
+            order: this.items.length + 1,
+            type: isHeadline ? 'headline' : 'task'
           })
       }
     }

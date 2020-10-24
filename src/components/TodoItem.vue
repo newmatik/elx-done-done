@@ -5,8 +5,8 @@
     elevation="0"
     outlined
   >
-    <div style="width: 50%" class="d-flex align-center">
-      <div>
+    <div style="width: 80%" class="d-flex align-center">
+      <div :style="{ visibility: type === 'headline' ? 'hidden' : 'visible' }">
         <v-checkbox
           class="ma-0 pa-0"
           :input-value="status === 'done'"
@@ -14,23 +14,29 @@
           @change="changeTaskStatus"
         ></v-checkbox>
       </div>
-      <v-text-field
-        v-if="isEditing"
-        hide-details
-        class="ma-0 pa-0 ml-4"
-        :value="taskTitle"
-        ref="task"
-        @blur="editTask"
-        @keydown.enter="editTask"
-      ></v-text-field>
-      <p
-        v-else
-        class="text-body-1 mb-0 ml-4"
-        :class="status === 'done' && 'strikethrough'"
-        @click="onTaskClick"
-      >
-        {{ taskTitle }}
-      </p>
+      <div style="width: 100%">
+        <v-text-field
+          v-if="isEditing"
+          hide-details
+          class="ma-0 pa-0 ml-4"
+          :class="{ 'font-weight-black': type === 'headline' }"
+          :value="taskTitle"
+          ref="task"
+          @blur="editTask"
+          @keydown.enter="editTask"
+        ></v-text-field>
+        <p
+          v-else
+          class="text-body-1 mb-0 ml-4"
+          :class="{
+            strikethrough: status === 'done',
+            'font-weight-black': type === 'headline'
+          }"
+          @click="onTaskClick"
+        >
+          {{ taskTitle }}
+        </p>
+      </div>
     </div>
     <div>
       <v-btn @click="removeTask" class="mx-2" fab x-small elevation="0">
@@ -62,6 +68,10 @@ export default {
     status: {
       type: String,
       default: 'pending'
+    },
+    type: {
+      type: String,
+      default: ''
     }
   },
   data() {
