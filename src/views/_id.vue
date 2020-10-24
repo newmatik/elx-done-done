@@ -123,7 +123,7 @@ export default {
       const taskTitle = isHeadline
         ? this.taskTitle.slice(0, -1)
         : this.taskTitle
-      if (this.taskTitle) {
+      if (taskTitle) {
         this.taskTitle = ''
         await db
           .collection('boards')
