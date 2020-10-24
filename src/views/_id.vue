@@ -97,7 +97,10 @@ export default {
   },
   firestore() {
     return {
-      items: db.collection(`boards/${this.$route.params.id}/list`)
+      items: db
+        .collection('boards')
+        .doc(this.$route.params.id)
+        .collection('list')
     }
   },
   computed: {
