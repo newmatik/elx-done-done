@@ -94,7 +94,7 @@ export default {
         .doc(this.$route.params.id)
         .collection('list')
         .doc(this.id)
-        .update({ status: value ? 'done' : 'pending' })
+        .set({ status: value ? 'done' : 'pending' }, { merge: true })
     },
     onTaskClick() {
       this.isEditing = true
@@ -110,7 +110,7 @@ export default {
           .doc(this.$route.params.id)
           .collection('list')
           .doc(this.id)
-          .update({ taskTitle: e.target.value })
+          .set({ taskTitle: e.target.value }, { merge: true })
       }
     }
   }

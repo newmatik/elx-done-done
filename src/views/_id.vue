@@ -23,7 +23,7 @@
             handle=".handle"
             @start="drag = true"
             @end="drag = false"
-            @change="log"
+            @change="onMove"
           >
             <todo-item
               v-for="item in items"
@@ -37,11 +37,12 @@
         </v-tab-item>
         <v-tab-item value="pending">
           <draggable
+            v-model="items"
             group="list"
             handle=".handle"
             @start="drag = true"
             @end="drag = false"
-            @change="log"
+            @change="onMove"
           >
             <todo-item
               v-for="item in pendingItems"
@@ -55,11 +56,12 @@
         </v-tab-item>
         <v-tab-item value="done">
           <draggable
+            v-model="items"
             group="list"
             handle=".handle"
             @start="drag = true"
             @end="drag = false"
-            @change="log"
+            @change="onMove"
           >
             <todo-item
               v-for="item in doneItems"
@@ -95,14 +97,6 @@ export default {
       tab: 'all'
     }
   },
-  firestore() {
-    return {
-      items: db
-        .collection('boards')
-        .doc(this.$route.params.id)
-        .collection('list')
-    }
-  },
   computed: {
     pendingItems() {
       return this.items.filter(item => item.status === 'pending')
@@ -112,11 +106,39 @@ export default {
     },
     isHeadline() {
       return this.taskTitle.endsWith(':')
+    },
+    maxOrder() {
+      return this.items.length === 0
+        ? 0
+        : this.items[this.items.length - 1].order
     }
   },
+  async created() {
+    db.collection('boards')
+      .doc(this.$route.params.id)
+      .collection('list')
+      .orderBy('order')
+      .onSnapshot(querySnapshot => {
+        let items = []
+        querySnapshot.forEach(doc => {
+          items.push({ id: doc.id, ...doc.data() })
+        })
+        this.items = items
+      })
+  },
   methods: {
-    log(value) {
-      console.log(value)
+    adjustOrder() {
+      this.items.forEach(async (item, i) => {
+        await db
+          .collection('boards')
+          .doc(this.$route.params.id)
+          .collection('list')
+          .doc(item.id)
+          .set({ order: i }, { merge: true })
+      })
+    },
+    onMove() {
+      this.adjustOrder()
     },
     async addTask() {
       const isHeadline = this.isHeadline
@@ -132,7 +154,7 @@ export default {
           .add({
             taskTitle,
             status: 'pending',
-            order: this.items.length + 1,
+            order: this.maxOrder + 1,
             type: isHeadline ? 'headline' : 'task'
           })
       }
