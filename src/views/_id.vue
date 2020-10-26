@@ -5,9 +5,15 @@
         <img height="50" src="images/DoneDoneLogo.svg" alt="Done Done Logo" />
       </router-link>
     </div>
+    <div
+      v-clipboard="$route.params.id"
+      @click="snackbar = true"
+      class="clipboard-text mt-8 d-flex justify-end"
+    >
+      <small>Copy Board URL</small>
+    </div>
     <v-text-field
       v-model.trim="taskTitle"
-      class="mt-4"
       outlined
       label="Add a new task by pressing + or enter key"
       append-icon="mdi-plus-circle"
@@ -110,6 +116,10 @@
         </v-tab-item>
       </v-tabs-items>
     </v-main>
+
+    <v-snackbar v-model="snackbar" timeout="2000">
+      Copied to clipboard
+    </v-snackbar>
   </div>
 </template>
 
@@ -129,7 +139,8 @@ export default {
       taskTitle: '',
       drag: false,
       items: [],
-      tab: 'all'
+      tab: 'all',
+      snackbar: false
     }
   },
   computed: {
@@ -201,6 +212,11 @@ export default {
 <style scoped>
 .board-page {
   max-width: 720px;
+}
+
+.clipboard-text {
+  cursor: pointer;
+  user-select: none;
 }
 
 @media (max-width: 640px) {

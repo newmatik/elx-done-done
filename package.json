@@ -12,6 +12,7 @@
     "firebase": "^7.24.0",
     "lodash.kebabcase": "^4.1.1",
     "nanoid": "^3.1.16",
+    "v-clipboard": "^2.2.3",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuedraggable": "^2.24.2",
