@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app color="white" elevation="0">
       <v-spacer></v-spacer>
-      <img src="images/DoneDoneLogo.svg" alt="Done Done Logo" />
+      <img height="50" src="images/DoneDoneLogo.svg" alt="Done Done Logo" />
       <v-spacer></v-spacer>
     </v-app-bar>
 

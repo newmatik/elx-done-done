@@ -10,7 +10,7 @@
       @click:append="addTask"
     ></v-text-field>
     <v-main class="pt-4">
-      <v-tabs v-model="tab" class="mb-4">
+      <v-tabs v-model="tab" centered class="mb-4">
         <v-tab href="#all">All</v-tab>
         <v-tab href="#pending">Pending</v-tab>
         <v-tab href="#done">Done</v-tab>
@@ -18,6 +18,7 @@
       <v-tabs-items v-model="tab">
         <v-tab-item value="all">
           <draggable
+            v-if="items.length > 0"
             v-model="items"
             group="list"
             handle=".handle"
@@ -34,9 +35,19 @@
               :type="item.type"
             ></todo-item>
           </draggable>
+          <div
+            v-else
+            class="d-flex justify-center flex-column text-center mt-12"
+          >
+            <img src="@/assets/no-results.svg" height="200" alt="no results" />
+            <h5 class="mt-4 font-weight-bold blue-grey--text text--darken-3">
+              No task recorded. Add a task now.
+            </h5>
+          </div>
         </v-tab-item>
         <v-tab-item value="pending">
           <draggable
+            v-if="pendingItems.length > 0"
             v-model="items"
             group="list"
             handle=".handle"
@@ -53,9 +64,19 @@
               :type="item.type"
             ></todo-item>
           </draggable>
+          <div
+            v-else
+            class="d-flex justify-center flex-column text-center mt-12"
+          >
+            <img src="@/assets/no-results.svg" height="200" alt="no results" />
+            <h5 class="mt-4 font-weight-bold blue-grey--text text--darken-3">
+              Stay motivated. Add a task now.
+            </h5>
+          </div>
         </v-tab-item>
         <v-tab-item value="done">
           <draggable
+            v-if="doneItems.length > 0"
             v-model="items"
             group="list"
             handle=".handle"
@@ -72,6 +93,15 @@
               :type="item.type"
             ></todo-item>
           </draggable>
+          <div
+            v-else
+            class="d-flex justify-center flex-column text-center mt-12"
+          >
+            <img src="@/assets/no-results.svg" height="200" alt="no results" />
+            <h5 class="mt-4 font-weight-bold blue-grey--text text--darken-3">
+              Keep going.
+            </h5>
+          </div>
         </v-tab-item>
       </v-tabs-items>
     </v-main>
