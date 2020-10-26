@@ -150,20 +150,21 @@ export default {
     doneItems() {
       return this.items.filter(item => item.status === 'done')
     },
+    reversedItems() {
+      return [...this.items].reverse()
+    },
     isHeadline() {
       return this.taskTitle.endsWith(':')
     },
     maxOrder() {
-      return this.items.length === 0
-        ? 0
-        : this.items[this.items.length - 1].order
+      return this.items.length === 0 ? 0 : this.items[0].order
     }
   },
   async created() {
     db.collection('boards')
       .doc(this.$route.params.id)
       .collection('list')
-      .orderBy('order')
+      .orderBy('order', 'desc')
       .onSnapshot(querySnapshot => {
         let items = []
         querySnapshot.forEach(doc => {
@@ -174,7 +175,7 @@ export default {
   },
   methods: {
     adjustOrder() {
-      this.items.forEach(async (item, i) => {
+      this.reversedItems.forEach(async (item, i) => {
         await db
           .collection('boards')
           .doc(this.$route.params.id)
