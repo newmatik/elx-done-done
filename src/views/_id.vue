@@ -1,8 +1,11 @@
 <template>
-  <div style="max-width: 720px;" class="board-page mx-auto">
+  <div class="board-page mx-auto">
+    <div class="d-flex justify-center mt-6">
+      <img height="50" src="images/DoneDoneLogo.svg" alt="Done Done Logo" />
+    </div>
     <v-text-field
       v-model.trim="taskTitle"
-      class="mt-12"
+      class="mt-4"
       outlined
       label="Add a new task by pressing + or enter key"
       append-icon="mdi-plus-circle"
@@ -114,7 +117,7 @@ import TodoItem from '@/components/TodoItem.vue'
 import { db } from '@/settings/db'
 
 export default {
-  name: 'Home',
+  name: 'Board',
   components: {
     draggable,
     TodoItem
@@ -194,6 +197,10 @@ export default {
 </script>
 
 <style scoped>
+.board-page {
+  max-width: 720px;
+}
+
 @media (max-width: 640px) {
   .board-page {
     padding: 0 1rem;
