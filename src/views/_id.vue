@@ -15,12 +15,13 @@
     <v-text-field
       v-model.trim="taskTitle"
       outlined
+      hide-details
       label="Add a new task by pressing + or enter key"
       append-icon="mdi-plus-circle"
       @keydown.enter="addTask"
       @click:append="addTask"
     ></v-text-field>
-    <v-main class="pt-4">
+    <v-main>
       <v-tabs v-model="tab" centered class="mb-4">
         <v-tab href="#all">All</v-tab>
         <v-tab href="#pending">Pending</v-tab>

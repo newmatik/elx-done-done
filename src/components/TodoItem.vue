@@ -1,7 +1,7 @@
 <template>
   <v-card
     :color="status === 'done' ? 'blue-grey lighten-5' : ''"
-    class="d-flex justify-space-between pa-4 mb-2"
+    class="d-flex justify-space-between pa-2 mb-2"
     elevation="0"
     outlined
   >
