@@ -34,40 +34,12 @@
       <div v-if="boards.length > 0">
         <h6>Recent Boards</h6>
         <v-chip-group column>
-          <v-chip
-            v-for="board in boards"
-            :key="board"
-            :to="`/${board}`"
-            close
-            @click:close="onBoardRemove(board)"
-          >
+          <v-chip v-for="board in boards" :key="board" :to="`/${board}`">
             {{ board }}
           </v-chip>
         </v-chip-group>
       </div>
     </div>
-
-    <v-dialog v-model="dialog" persistent max-width="290">
-      <v-card>
-        <v-card-title class="headline red--text">
-          Deleting board...
-        </v-card-title>
-        <v-card-text>
-          Are you sure you want to delete board
-          <strong>{{ selectedBoardId }}</strong>
-          ? This action cannot be undone.
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">
-            Cancel
-          </v-btn>
-          <v-btn color="red darken-1" dark @click="removeBoard">
-            Delete
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <v-snackbar v-model="snackbar" timeout="2000">
       No board found.
@@ -88,7 +60,6 @@ export default {
       topic: '',
       uniqueId: '',
       boards: [],
-      dialog: false,
       selectedBoardId: '',
       boardName: '',
       snackbar: false
@@ -130,19 +101,6 @@ export default {
         this.saveBoardToLocalStorage(this.hint)
         this.$router.push(`/${this.hint}`)
       }
-    },
-    onBoardRemove(board) {
-      this.dialog = true
-      this.selectedBoardId = board
-    },
-    async removeBoard() {
-      await db
-        .collection('boards')
-        .doc(this.selectedBoardId)
-        .delete()
-      this.boards = this.boards.filter(board => board !== this.selectedBoardId)
-      localStorage.setItem('boards', JSON.stringify(this.boards))
-      this.dialog = false
     },
     async joinBoard() {
       const snapshot = await db
