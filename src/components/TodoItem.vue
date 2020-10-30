@@ -1,7 +1,7 @@
 <template>
   <v-card
     :color="status === 'done' ? 'blue-grey lighten-5' : ''"
-    class="d-flex justify-space-between pa-2 mb-2"
+    class="d-flex justify-space-between pa-2 task-item"
     elevation="0"
     outlined
   >
@@ -146,5 +146,16 @@ export default {
 <style scoped>
 .strikethrough {
   text-decoration: line-through;
+}
+
+.task-item.theme--light.v-sheet--outlined {
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+
+.task-item:last-child.theme--light.v-sheet--outlined {
+  border-bottom: thin solid rgba(0, 0, 0, 0.12);
 }
 </style>
