@@ -194,9 +194,7 @@ export default {
     },
     async addTask() {
       const isHeadline = this.isHeadline
-      const taskTitle = isHeadline
-        ? this.taskTitle.slice(0, -1)
-        : this.taskTitle
+      const taskTitle = this.taskTitle
       if (taskTitle) {
         this.taskTitle = ''
         await db
