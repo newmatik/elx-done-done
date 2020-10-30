@@ -44,7 +44,7 @@
     </div>
     <div class="d-flex align-center">
       <v-btn @click="dialog = true" class="mx-2" fab x-small elevation="0">
-        <v-icon>
+        <v-icon color="rgba(0, 0, 0, 0.54)">
           mdi-trash-can
         </v-icon>
       </v-btn>
