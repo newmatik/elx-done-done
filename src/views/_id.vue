@@ -5,12 +5,16 @@
         <img height="50" src="images/DoneDoneLogo.svg" alt="Done Done Logo" />
       </router-link>
     </div>
-    <div
-      v-clipboard="$route.params.id"
-      @click="snackbar = true"
-      class="clipboard-text mt-8 d-flex justify-end"
-    >
-      <small>Copy Board URL</small>
+    <div class="my-4 d-flex justify-center align-center">
+      <v-icon
+        v-clipboard="$route.params.id"
+        @click="snackbar = true"
+        small
+        class="mr-1 clipboard"
+      >
+        mdi-clipboard-outline
+      </v-icon>
+      <p class="ma-0 grey--text text--darken-2">{{ $route.params.id }}</p>
     </div>
     <v-text-field
       v-model.trim="taskTitle"
@@ -216,7 +220,7 @@ export default {
   max-width: 720px;
 }
 
-.clipboard-text {
+.clipboard {
   cursor: pointer;
   user-select: none;
 }
