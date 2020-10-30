@@ -136,7 +136,13 @@ export default {
           .doc(this.$route.params.id)
           .collection('list')
           .doc(this.id)
-          .set({ taskTitle: e.target.value }, { merge: true })
+          .set(
+            {
+              taskTitle: e.target.value,
+              type: e.target.value.endsWith(':') ? 'headline' : 'task'
+            },
+            { merge: true }
+          )
       }
     }
   }
