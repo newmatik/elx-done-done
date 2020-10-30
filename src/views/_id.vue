@@ -1,6 +1,6 @@
 <template>
   <div class="board-page mx-auto">
-    <div class="d-flex justify-center mt-6">
+    <div class="d-flex justify-center mt-2">
       <router-link style="cursor: pointer;" to="/">
         <img height="50" src="images/DoneDoneLogo.svg" alt="Done Done Logo" />
       </router-link>
