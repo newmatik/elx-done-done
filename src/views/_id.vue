@@ -30,6 +30,7 @@
         <v-tab href="#all">All</v-tab>
         <v-tab href="#pending">Pending</v-tab>
         <v-tab href="#done">Done</v-tab>
+        <v-tab href="#marked">Marked</v-tab>
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item value="all">
@@ -46,6 +47,12 @@
         </v-tab-item>
         <v-tab-item value="done">
           <todo-list :items="doneItems" empty-message="Keep going"></todo-list>
+        </v-tab-item>
+        <v-tab-item value="marked">
+          <todo-list
+            :items="markedItems"
+            empty-message="Tip: Keep important things on your bookmark."
+          ></todo-list>
         </v-tab-item>
       </v-tabs-items>
     </v-main>
@@ -80,6 +87,9 @@ export default {
     },
     doneItems() {
       return this.items.filter(item => item.status === 'done')
+    },
+    markedItems() {
+      return this.items.filter(item => item.isBookmarked)
     },
     isHeadline() {
       return this.taskTitle.endsWith(':')
