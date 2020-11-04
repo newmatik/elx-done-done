@@ -33,94 +33,19 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item value="all">
-          <draggable
-            v-if="items.length > 0"
-            v-model="items"
-            group="list"
-            handle=".handle"
-            @start="drag = true"
-            @end="drag = false"
-            @change="onMove"
-          >
-            <todo-item
-              v-for="item in items"
-              :key="item.id"
-              :id="item.id"
-              :task-title="item.taskTitle"
-              :status="item.status"
-              :type="item.type"
-              :is-bookmarked="item.isBookmarked"
-            ></todo-item>
-          </draggable>
-          <div
-            v-else
-            class="d-flex justify-center flex-column text-center mt-12"
-          >
-            <img src="@/assets/no-results.svg" height="200" alt="no results" />
-            <h5 class="mt-4 font-weight-bold blue-grey--text text--darken-3">
-              No task recorded. Add a task now.
-            </h5>
-          </div>
+          <todo-list
+            :items="items"
+            empty-message="No task recorded. Add a task now."
+          ></todo-list>
         </v-tab-item>
         <v-tab-item value="pending">
-          <draggable
-            v-if="pendingItems.length > 0"
-            v-model="items"
-            group="list"
-            handle=".handle"
-            @start="drag = true"
-            @end="drag = false"
-            @change="onMove"
-          >
-            <todo-item
-              v-for="item in pendingItems"
-              :key="item.id"
-              :id="item.id"
-              :task-title="item.taskTitle"
-              :status="item.status"
-              :type="item.type"
-              :is-bookmarked="item.isBookmarked"
-            ></todo-item>
-          </draggable>
-          <div
-            v-else
-            class="d-flex justify-center flex-column text-center mt-12"
-          >
-            <img src="@/assets/no-results.svg" height="200" alt="no results" />
-            <h5 class="mt-4 font-weight-bold blue-grey--text text--darken-3">
-              Stay motivated. Add a task now.
-            </h5>
-          </div>
+          <todo-list
+            :items="pendingItems"
+            empty-message="Stay motivated. Add a task now."
+          ></todo-list>
         </v-tab-item>
         <v-tab-item value="done">
-          <draggable
-            v-if="doneItems.length > 0"
-            v-model="items"
-            group="list"
-            handle=".handle"
-            @start="drag = true"
-            @end="drag = false"
-            @change="onMove"
-          >
-            <todo-item
-              v-for="item in doneItems"
-              :key="item.id"
-              :id="item.id"
-              :task-title="item.taskTitle"
-              :status="item.status"
-              :type="item.type"
-              :is-bookmarked="item.isBookmarked"
-            ></todo-item>
-          </draggable>
-          <div
-            v-else
-            class="d-flex justify-center flex-column text-center mt-12"
-          >
-            <img src="@/assets/no-results.svg" height="200" alt="no results" />
-            <h5 class="mt-4 font-weight-bold blue-grey--text text--darken-3">
-              Keep going.
-            </h5>
-          </div>
+          <todo-list :items="doneItems" empty-message="Keep going"></todo-list>
         </v-tab-item>
       </v-tabs-items>
     </v-main>
@@ -132,15 +57,13 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
-import TodoItem from '@/components/TodoItem.vue'
-import { db } from '@/settings/db'
+import TodoList from '@/components/TodoList.vue'
+import { listRef } from '@/settings/dbRef'
 
 export default {
   name: 'Board',
   components: {
-    draggable,
-    TodoItem
+    TodoList
   },
   data() {
     return {
@@ -158,9 +81,6 @@ export default {
     doneItems() {
       return this.items.filter(item => item.status === 'done')
     },
-    reversedItems() {
-      return [...this.items].reverse()
-    },
     isHeadline() {
       return this.taskTitle.endsWith(':')
     },
@@ -169,9 +89,7 @@ export default {
     }
   },
   async created() {
-    db.collection('boards')
-      .doc(this.$route.params.id)
-      .collection('list')
+    await listRef(this.$route.params.id)
       .orderBy('order', 'desc')
       .onSnapshot(querySnapshot => {
         let items = []
@@ -182,35 +100,18 @@ export default {
       })
   },
   methods: {
-    adjustOrder() {
-      this.reversedItems.forEach(async (item, i) => {
-        await db
-          .collection('boards')
-          .doc(this.$route.params.id)
-          .collection('list')
-          .doc(item.id)
-          .set({ order: i }, { merge: true })
-      })
-    },
-    onMove() {
-      this.adjustOrder()
-    },
     async addTask() {
       const isHeadline = this.isHeadline
       const taskTitle = this.taskTitle
       if (taskTitle) {
         this.taskTitle = ''
-        await db
-          .collection('boards')
-          .doc(this.$route.params.id)
-          .collection('list')
-          .add({
-            taskTitle,
-            status: 'pending',
-            order: this.maxOrder + 1,
-            isBookmarked: false,
-            type: isHeadline ? 'headline' : 'task'
-          })
+        await listRef(this.$route.params.id).add({
+          taskTitle,
+          status: 'pending',
+          order: this.maxOrder + 1,
+          isBookmarked: false,
+          type: isHeadline ? 'headline' : 'task'
+        })
       }
     }
   }

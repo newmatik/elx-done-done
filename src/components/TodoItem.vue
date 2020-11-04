@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { db } from '@/settings/db'
+import { docListRef } from '@/settings/dbRef'
 
 export default {
   name: 'TodoItem',
@@ -133,20 +133,13 @@ export default {
   },
   methods: {
     async removeTask() {
-      await db
-        .collection('boards')
-        .doc(this.$route.params.id)
-        .collection('list')
-        .doc(this.id)
-        .delete()
+      await docListRef(this.$route.params.id, this.id).delete()
     },
     async changeTaskStatus(value) {
-      await db
-        .collection('boards')
-        .doc(this.$route.params.id)
-        .collection('list')
-        .doc(this.id)
-        .set({ status: value ? 'done' : 'pending' }, { merge: true })
+      await docListRef(this.$route.params.id, this.id).set(
+        { status: value ? 'done' : 'pending' },
+        { merge: true }
+      )
     },
     onTaskClick() {
       this.isEditing = true
@@ -157,32 +150,22 @@ export default {
     async editTask(e) {
       this.isEditing = false
       if (e.target.value !== this.taskTitle) {
-        await db
-          .collection('boards')
-          .doc(this.$route.params.id)
-          .collection('list')
-          .doc(this.id)
-          .set(
-            {
-              taskTitle: e.target.value,
-              type: e.target.value.endsWith(':') ? 'headline' : 'task'
-            },
-            { merge: true }
-          )
-      }
-    },
-    async toggleBookmark(value) {
-      await db
-        .collection('boards')
-        .doc(this.$route.params.id)
-        .collection('list')
-        .doc(this.id)
-        .set(
+        await docListRef(this.$route.params.id, this.id).set(
           {
-            isBookmarked: value
+            taskTitle: e.target.value,
+            type: e.target.value.endsWith(':') ? 'headline' : 'task'
           },
           { merge: true }
         )
+      }
+    },
+    async toggleBookmark(value) {
+      await docListRef(this.$route.params.id, this.id).set(
+        {
+          isBookmarked: value
+        },
+        { merge: true }
+      )
     }
   }
 }
