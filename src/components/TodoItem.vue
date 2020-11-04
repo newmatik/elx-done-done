@@ -43,6 +43,28 @@
       </div>
     </div>
     <div class="d-flex align-center">
+      <div v-if="type !== 'headline'">
+        <img
+          v-if="isBookmarked"
+          @click="toggleBookmark(false)"
+          class="bookmark-icon"
+          src="@/assets/bookmark.svg"
+          height="45"
+          alt="no results"
+        />
+        <v-btn
+          v-else
+          @click="toggleBookmark(true)"
+          class="mx-2"
+          fab
+          x-small
+          elevation="0"
+        >
+          <v-icon color="rgba(0, 0, 0, 0.54)">
+            mdi-star
+          </v-icon>
+        </v-btn>
+      </div>
       <v-btn @click="dialog = true" class="mx-2" fab x-small elevation="0">
         <v-icon color="rgba(0, 0, 0, 0.54)">
           mdi-trash-can
@@ -97,6 +119,10 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    isBookmarked: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -144,6 +170,19 @@ export default {
             { merge: true }
           )
       }
+    },
+    async toggleBookmark(value) {
+      await db
+        .collection('boards')
+        .doc(this.$route.params.id)
+        .collection('list')
+        .doc(this.id)
+        .set(
+          {
+            isBookmarked: value
+          },
+          { merge: true }
+        )
     }
   }
 }
@@ -152,6 +191,10 @@ export default {
 <style scoped>
 .strikethrough {
   text-decoration: line-through;
+}
+
+.task-item {
+  position: relative;
 }
 
 .task-item.theme--light.v-sheet--outlined {
@@ -163,5 +206,13 @@ export default {
 
 .task-item:last-child.theme--light.v-sheet--outlined {
   border-bottom: thin solid rgba(0, 0, 0, 0.12);
+}
+
+.bookmark-icon {
+  position: absolute;
+  top: -1px;
+  bottom: 0;
+  right: 90px;
+  cursor: pointer;
 }
 </style>

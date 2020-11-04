@@ -49,6 +49,7 @@
               :task-title="item.taskTitle"
               :status="item.status"
               :type="item.type"
+              :is-bookmarked="item.isBookmarked"
             ></todo-item>
           </draggable>
           <div
@@ -78,6 +79,7 @@
               :task-title="item.taskTitle"
               :status="item.status"
               :type="item.type"
+              :is-bookmarked="item.isBookmarked"
             ></todo-item>
           </draggable>
           <div
@@ -107,6 +109,7 @@
               :task-title="item.taskTitle"
               :status="item.status"
               :type="item.type"
+              :is-bookmarked="item.isBookmarked"
             ></todo-item>
           </draggable>
           <div
@@ -205,6 +208,7 @@ export default {
             taskTitle,
             status: 'pending',
             order: this.maxOrder + 1,
+            isBookmarked: false,
             type: isHeadline ? 'headline' : 'task'
           })
       }
