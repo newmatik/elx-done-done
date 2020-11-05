@@ -5,7 +5,7 @@
     elevation="0"
     outlined
   >
-    <div style="width: 80%" class="d-flex align-center">
+    <div style="width: 65%" class="d-flex align-center">
       <div v-if="type !== 'headline'">
         <v-checkbox
           class="ma-0 pa-0"

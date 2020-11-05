@@ -26,7 +26,7 @@
       @click:append="addTask"
     ></v-text-field>
     <v-main>
-      <v-tabs v-model="tab" centered>
+      <v-tabs show-arrows v-model="tab" centered>
         <v-tab href="#all">All</v-tab>
         <v-tab href="#pending">Pending</v-tab>
         <v-tab href="#done">Done</v-tab>
