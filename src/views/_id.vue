@@ -34,25 +34,76 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item value="all">
-          <todo-list
-            :items="items"
-            empty-message="No task recorded. Add a task now."
-          ></todo-list>
+          <todo-list :items="items">
+            <template #empty>
+              <div class="d-flex justify-center flex-column text-center mt-12">
+                <img
+                  src="@/assets/no-results.svg"
+                  height="200"
+                  alt="no results"
+                />
+                <h5
+                  class="mt-4 font-weight-bold blue-grey--text text--darken-3"
+                >
+                  No task recorded. Add a task now.
+                </h5>
+              </div>
+            </template>
+          </todo-list>
         </v-tab-item>
         <v-tab-item value="pending">
-          <todo-list
-            :items="pendingItems"
-            empty-message="Stay motivated. Add a task now."
-          ></todo-list>
+          <todo-list :items="pendingItems">
+            <template #empty>
+              <div class="d-flex justify-center flex-column text-center mt-12">
+                <img
+                  src="@/assets/no-results.svg"
+                  height="200"
+                  alt="no results"
+                />
+                <h5
+                  class="mt-4 font-weight-bold blue-grey--text text--darken-3"
+                >
+                  Stay motivated. Add a task now.
+                </h5>
+              </div>
+            </template>
+          </todo-list>
         </v-tab-item>
         <v-tab-item value="done">
-          <todo-list :items="doneItems" empty-message="Keep going"></todo-list>
+          <todo-list :items="doneItems">
+            <template #empty>
+              <div class="d-flex justify-center flex-column text-center mt-12">
+                <img
+                  src="@/assets/no-results.svg"
+                  height="200"
+                  alt="no results"
+                />
+                <h5
+                  class="mt-4 font-weight-bold blue-grey--text text--darken-3"
+                >
+                  Keep going
+                </h5>
+              </div>
+            </template>
+          </todo-list>
         </v-tab-item>
         <v-tab-item value="marked">
-          <todo-list
-            :items="markedItems"
-            empty-message="Tip: Keep important things on your bookmark."
-          ></todo-list>
+          <todo-list :items="markedItems">
+            <template #empty>
+              <div class="d-flex justify-center flex-column text-center mt-12">
+                <img
+                  src="@/assets/no-results.svg"
+                  height="200"
+                  alt="no results"
+                />
+                <h5
+                  class="mt-4 font-weight-bold blue-grey--text text--darken-3"
+                >
+                  Tip: Keep important things on your bookmark.
+                </h5>
+              </div>
+            </template>
+          </todo-list>
         </v-tab-item>
       </v-tabs-items>
     </v-main>

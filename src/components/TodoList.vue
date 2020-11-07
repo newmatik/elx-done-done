@@ -17,12 +17,7 @@
         :is-bookmarked="item.isBookmarked"
       ></todo-item>
     </draggable>
-    <div v-else class="d-flex justify-center flex-column text-center mt-12">
-      <img src="@/assets/no-results.svg" height="200" alt="no results" />
-      <h5 class="mt-4 font-weight-bold blue-grey--text text--darken-3">
-        {{ emptyMessage }}
-      </h5>
-    </div>
+    <slot v-else name="empty"></slot>
   </div>
 </template>
 
@@ -41,10 +36,6 @@ export default {
     items: {
       type: Array,
       default: () => []
-    },
-    emptyMessage: {
-      type: String,
-      default: ''
     }
   },
   computed: {
