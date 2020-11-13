@@ -128,7 +128,7 @@ export default {
       taskTitle: '',
       drag: false,
       items: [],
-      tab: 'all',
+      tab: 'pending',
       snackbar: false
     }
   },
