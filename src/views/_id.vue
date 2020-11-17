@@ -34,7 +34,7 @@
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item value="all">
-          <todo-list :items="items">
+          <todo-list :items="allItems">
             <template #empty>
               <div class="d-flex justify-center flex-column text-center mt-12">
                 <img
@@ -133,6 +133,9 @@ export default {
     }
   },
   computed: {
+    allItems() {
+      return [...this.pendingItems, ...this.doneItems]
+    },
     pendingItems() {
       return this.items.filter(item => item.status === 'pending')
     },
